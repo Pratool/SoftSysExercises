@@ -1,2 +1,2 @@
 make
-./wordsplit moby-dick.txt stats
+./wordsplit moby-dick.txt stats.csv

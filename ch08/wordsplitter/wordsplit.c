@@ -4,7 +4,7 @@
 
 void print_hash(gpointer key, gpointer value, gpointer outfile) {
     int val = (int) value;
-    fprintf((FILE *)outfile, "key: %s\tvalue: %d\n", (char*)key, val);
+    fprintf((FILE *)outfile, "%s,%d\n", (char*)key, val);
 }
 
 int main(int argc, char **argv) {
@@ -24,7 +24,8 @@ int main(int argc, char **argv) {
     GHashTable *word_freq = g_hash_table_new(g_str_hash, g_str_equal);
 
     while ( (val = getc(text)) != EOF ) {
-        if ( isspace(val) ) {
+        val = tolower(val);
+        if ( isspace(val) || ispunct(val) ) {
             bufc[bufc_ind] = '\0';
             if (g_hash_table_contains(word_freq, bufc)) {
                 g_hash_table_insert(word_freq, g_strdup(bufc),
@@ -38,6 +39,7 @@ int main(int argc, char **argv) {
         }
     }
 
+    fprintf(out_data, "word,frequency\n");
     g_hash_table_foreach(word_freq, print_hash, out_data);
     return 0;
 }
